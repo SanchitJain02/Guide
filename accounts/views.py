@@ -11,7 +11,7 @@ from django.core.mail import send_mail
 
 
 def home(request):
-    return render(request, '../templates/home.html')
+    return render(request, '../templates/home.html')   
 
 
 def register(request):
@@ -62,7 +62,7 @@ def logout_view(request):
     return redirect('/')
 
 def student_dashboard(request):
-    students_info = Student.objects.all()
+    students_info = Student.objects.filter(name = login_request.username)
     current_user = {"current_user1":login_request.username}
     context  = {"current_user":current_user,"students_info":students_info}
     return render(request, '../templates/student_dashboard.html',context)
@@ -78,13 +78,18 @@ def teacher_dashboard(request):
     #return render(request,"employee_dashboard.html")       
 
 def project_submission(request):
+    students_info_email = Student.objects.get(name = login_request.username)
+    students_info = Student.objects.filter(name = login_request.username)
+    teachers_name = Teacher.objects.all()
+    current_user = {"current_user1":login_request.username}
+    context  = {"teachers_name":teachers_name,"current_user":current_user,"students_info":students_info}    
     if request.method == "POST":
-        student_name = request.POST.get("student_name")
+        student_name = students_info_email.name
         project_title = request.POST.get("project_title")
         project_desc = request.POST.get("project_desc")
         tech_stack = request.POST.get("tech_stack")
         mentor_name = request.POST.get("mentor_name")
-        email_id = request.POST.get("email_id")
+        email_id = students_info_email.email
         new_project = New_Project(student_name = student_name,project_title = project_title,
          project_desc = project_desc,tech_stack = tech_stack,mentor_name = mentor_name,email_id = email_id)
         new_project.save()
@@ -97,7 +102,7 @@ def project_submission(request):
                                     #"\n\n Mentor Name - "+mentor_name + 
                                     #"\n\n Tech stack of the project -"+tech_stack)
 
-        body = "\n\n Hii "+student_name+" !!! \n\n You have chosen the project -- "+project_title + "\n\n Mentor Name - "+mentor_name + "\n\n Tech stack of the project - "+tech_stack                          
+        body = "\n\n Hii "+student_name+" !!! \n\n You have chosen the project -- "+project_title + "\n\n Mentor Name - "+mentor_name + "\n\n Tech stack of the project - "+tech_stack + "\n\n With Regards \n TEAM GUIDE"                          
 
         send_mail(
             "New Project",
@@ -108,10 +113,7 @@ def project_submission(request):
         )                            
 
         messages.success(request,"Project has been submit successfully. A verification message has been sent to your Email id.")
-        return redirect("project_submission")
-    teachers_name = Teacher.objects.all()
-    current_user = {"current_user1":login_request.username}
-    context  = {"teachers_name":teachers_name,"current_user":current_user}    
+        return redirect("project_submission")    
     return render(request, '../templates/project_submission.html',context)        
 
    

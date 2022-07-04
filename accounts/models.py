@@ -11,15 +11,23 @@ class User(AbstractUser):
 
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE, primary_key = True)
+    name = models.CharField(max_length=50,null = True)
     email = models.CharField(max_length=50)
     interest = models.CharField(max_length=50)
     github_username = models.CharField(max_length=100,null = True)
 
+    def __str__(self):
+        return self.name
+
 class Teacher(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE, primary_key = True)
+    name = models.CharField(max_length=50,null = True)
     email = models.CharField(max_length=50)
     interest = models.CharField(max_length=50)
     experience = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
 
 class New_Project(models.Model):
     user_id = models.ForeignKey(User,on_delete=models.CASCADE, null=True, blank=True)

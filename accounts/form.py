@@ -6,12 +6,10 @@ from django.forms import ModelForm
 
 
 class StudentSignUpForm(UserCreationForm):
-    first_name = forms.CharField(required=True)
-    last_name = forms.CharField(required=True)
+    name = forms.CharField(required=True)
     email = forms.CharField(required=True)
     interest = forms.CharField(required=True)
     highest_degree = forms.CharField(required=True)
-    phone_no = forms.CharField(required=True)
     github_username = forms.CharField(required=True)
 
     class Meta(UserCreationForm.Meta):
@@ -21,20 +19,18 @@ class StudentSignUpForm(UserCreationForm):
     def save(self):
         user = super().save(commit=False)
         user.is_student = True
-        user.first_name = self.cleaned_data.get('first_name')
-        user.last_name = self.cleaned_data.get('last_name')
         user.save()
         student = Student.objects.create(user=user)
         student.email=self.cleaned_data.get('email')
+        student.name=self.cleaned_data.get('name')
         student.interest=self.cleaned_data.get('interest')
-        student.phone_no=self.cleaned_data.get('phone_no')
+        student.email=self.cleaned_data.get('email')
         student.github_username=self.cleaned_data.get('github_username')
         student.save()
         return user
 
 class TeacherSignUpForm(UserCreationForm):
-    first_name = forms.CharField(required=True)
-    last_name = forms.CharField(required=True)
+    name = forms.CharField(required=True)
     email = forms.CharField(required=True)
     interest = forms.CharField(required=True)
     experience = forms.CharField(required=True)
@@ -48,12 +44,11 @@ class TeacherSignUpForm(UserCreationForm):
         user = super().save(commit=False)
         user.is_teacher = True
         user.is_staff = True
-        user.first_name = self.cleaned_data.get('first_name')
-        user.last_name = self.cleaned_data.get('last_name')
         user.save()
         teacher = Teacher.objects.create(user=user)
         teacher.email=self.cleaned_data.get('email')
+        teacher.name=self.cleaned_data.get('name')
         teacher.interest=self.cleaned_data.get('interest')
-        teacher.experience=self.cleaned_data.get('experiance')
+        teacher.experience=self.cleaned_data.get('experience')
         teacher.save()
         return user

@@ -44,14 +44,19 @@
       {% csrf_token %}
       <div class="mb-3 animated slideInLeft">
         <label for="exampleFormControlInput1" class="form-label"><b>Student Name</b></label>
-        <input type="text" class="form-control" id="exampleFormControlInput1"
-        name = "student_name" placeholder="Name of the Student">
+        {%for students_info in students_info %}
+        <label for="exampleFormControlTextarea1" class="form-label" name = "student_name"><b>: {{students_info.name}} </b></label>
+        {%endfor%} <br>
+        <label for="exampleFormControlTextarea1" class="form-label"><b>Email id </b></label>
+        {%for students_info in students_info %}
+        <label for="exampleFormControlTextarea1" class="form-label" name = "email_id"><b>: {{students_info.email}} </b></label>
+        {%endfor%}
       </div>    
   <div class="mb-3 animated slideInRight">
       <label for="exampleFormControlInput1" class="form-label"><b>Project Title</b></label>
       <input type="text" class="form-control" id="exampleFormControlInput1"
       name = "project_title" placeholder="Titile of the Project">
-    </div>
+  </div>
     <div class="mb-3 animated slideInLeft">
       <label for="exampleFormControlTextarea1" class="form-label"><b>Project Description</b></label>
       <textarea class="form-control" id="exampleFormControlTextarea1" name = "project_desc"
@@ -62,11 +67,6 @@
         <input type="text" class="form-control" id="exampleFormControlInput1"
       name = "tech_stack" placeholder="Tech Stack of the project">
     </div>
-    <div class="mb-3  animated slideInLeft">
-      <label for="exampleFormControlTextarea1" class="form-label"><b>Email id </b></label>
-      <input type="text" class="form-control" id="exampleFormControlInput1"
-    name = "email_id" placeholder="abc@gmail.com">
-  </div>
     <div class="input-group mb-3  animated slideInRight">
       <label class="input-group-text" for="inputGroupSelect01"><b>Mentor</b></label>
       <select class="form-select" id="inputGroupSelect01" name ="mentor_name">
