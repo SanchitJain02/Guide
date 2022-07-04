@@ -11,3 +11,5 @@ twilio==7.5.1
 pytz==2020.1
 secure-smtplib==0.1.1
 python-decouple==3.6
+sqlparse==0.4.2
+asgiref==3.5.0
