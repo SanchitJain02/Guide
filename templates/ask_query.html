@@ -41,16 +41,14 @@
   <h1 class = "text-center my-3 animated bounceInUp"><u> Ask Query </u></h1>
   <div class = "container">
   <form action ="ask_query" method="POST">
-      {% csrf_token %}
-      <div class="mb-3 animated bounceInLeft">
-        <label for="exampleFormControlInput1" class="form-label"><b>Student Name</b></label>
-        <input type="text" class="form-control" id="exampleFormControlInput1"
-        name = "student_name" placeholder="Name of the Student">
-      </div>    
+      {% csrf_token %}    
   <div class="mb-3 animated bounceInRight">
       <label for="exampleFormControlInput1" class="form-label"><b>Project Name</b></label>
-      <input type="text" class="form-control" id="exampleFormControlInput1"
-      name = "project_name" placeholder="Titile of the Project">
+      <select class="form-select" id="inputGroupSelect01" name ="project_name">
+        {%for student_projects in student_projects %}
+        <option >{{student_projects.project_title}}</option>
+        {%endfor%}
+      </select>
     </div>
     <div class="mb-3 animated bounceInLeft">
       <label for="exampleFormControlTextarea1" class="form-label"><b>Query</b></label>

@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.views.generic import CreateView
 from .form import StudentSignUpForm, TeacherSignUpForm 
 from django.contrib.auth.forms import AuthenticationForm
-from .models import  Existing_Projects, Milestone, Student, User, New_Project , Teacher, Queries,Resolved_Queries
+from .models import  Existing_Projects, Milestone, Student, User, New_Project , Teacher, Queries,Resolved_Queries,Progress
 from django.contrib.auth import authenticate,login,logout
 from twilio.rest import Client
 from django.core.mail import send_mail
@@ -102,13 +102,24 @@ def project_submission(request):
                                     #"\n\n Mentor Name - "+mentor_name + 
                                     #"\n\n Tech stack of the project -"+tech_stack)
 
-        body = "\n\n Hii "+student_name+" !!! \n\n You have chosen the project -- "+project_title + "\n\n Mentor Name - "+mentor_name + "\n\n Tech stack of the project - "+tech_stack + "\n\n With Regards \n TEAM GUIDE"                          
+        body_student = "\n\n Hii "+student_name+" !!! \n\n You have choosen the project -- "+project_title + "\n\n Mentor Name - "+mentor_name + "\n\n Tech stack of the project - "+tech_stack + "\n\n With Regards \n TEAM GUIDE"
+        body_mentor = "\n\n Hii "+mentor_name+" !!! \n\n You have been choosen by : "+student_name+"\n For the project : "+project_title + "\n\n Tech stack of the project - "+tech_stack + "\n\n With Regards \n TEAM GUIDE"
+        mentor_info_email = Teacher.objects.get(name = mentor_name)
+        email_id_mentor = mentor_info_email.email                          
 
         send_mail(
             "New Project",
-            body,
+            body_student,
             "sanchitjain223223@gmail.com",
             [email_id],
+            fail_silently=False
+        )
+
+        send_mail(
+            "New Project",
+            body_mentor,
+            "sanchitjain223223@gmail.com",
+            [email_id_mentor],
             fail_silently=False
         )                            
 
@@ -118,8 +129,9 @@ def project_submission(request):
 
    
 def add_milestones(request):
+    student_projects = New_Project.objects.filter(student_name = login_request.username)
     if request.method == "POST":
-        student_name = request.POST.get("student_name")
+        student_name = login_request.username
         project_name = request.POST.get("project_name")
         milestone = request.POST.get("milestone")
         end_date = request.POST.get("end_date")
@@ -129,12 +141,13 @@ def add_milestones(request):
         messages.success(request,"Milestone has been added successfully")
         return redirect("add_milestones")
     current_user = {"current_user1":login_request.username}   
-    context  = {"current_user":current_user}    
+    context  = {"current_user":current_user,"student_projects":student_projects}    
     return render(request, '../templates/add_milestones.html',context)        
 
 def ask_query(request):
+    student_projects = New_Project.objects.filter(student_name = login_request.username)
     if request.method == "POST":
-        student_name = request.POST.get("student_name")
+        student_name = login_request.username
         project_name = request.POST.get("project_name")
         query = request.POST.get("query")
         new_query = Queries(student_name = student_name,project_name = project_name,
@@ -143,7 +156,7 @@ def ask_query(request):
         messages.success(request,"Query has been post successfully")
         return redirect("ask_query")
     current_user = {"current_user1":login_request.username}   
-    context  = {"current_user":current_user}    
+    context  = {"current_user":current_user,"student_projects":student_projects}    
     return render(request, '../templates/ask_query.html',context) 
 
 def solve_query(request):
@@ -190,3 +203,34 @@ def existing_projects(request):
     current_user = {"current_user1":login_request.username}
     context  = {"project_details":project_details,"current_user":current_user}
     return render(request, '../templates/existing_projects.html',context)  
+
+def add_progress(request):
+    student_projects = New_Project.objects.filter(student_name = login_request.username)
+    current_user = {"current_user1":login_request.username}
+    if request.method == "POST":
+        student_name = login_request.username
+        project_name = request.POST.get("project_name")
+        progress = request.POST.get("progress")
+        resources = request.POST.get("resources")
+        start_date = request.POST.get("start_date")
+        end_date = request.POST.get("end_date")
+        mentor_name_formula = New_Project.objects.get(project_title = project_name)
+        mentor_name = mentor_name_formula.mentor_name
+        github_username_formula = Student.objects.get(name = student_name)
+        github_username = github_username_formula.github_username
+        new_progress = Progress(student_name = student_name,project_name = project_name,
+         progress = progress,resources = resources,start_date = start_date,
+         end_date = end_date,mentor_name = mentor_name,github_username = github_username)
+        new_progress.save()
+        messages.success(request,"Progress has been submitted successfully")
+        return redirect("progress")
+    context  = {"student_projects":student_projects,"current_user":current_user}    
+    return render(request, '../templates/add_progress.html',context)
+
+def show_progress(request):
+    progress_details = Progress.objects.all()
+    current_user = {"current_user1":login_request.username}
+    context  = {"progress_details":progress_details,"current_user":current_user}
+    return render(request, '../templates/show_progress.html',context)
+
+

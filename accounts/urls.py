@@ -20,4 +20,6 @@ urlpatterns=[
      path('project_submission',views.project_submission, name='project_submission'),
      path('view_all_projects',views.view_all_projects, name='view_all_projects'),
      path('logout/',views.logout_view, name='logout'),
+     path('progress',views.add_progress, name='progress'),
+     path('show_progress',views.show_progress, name='show_progress'),
 ]

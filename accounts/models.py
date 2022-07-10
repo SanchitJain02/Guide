@@ -1,3 +1,4 @@
+from pickle import TRUE
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractUser
@@ -81,3 +82,17 @@ class Existing_Projects(models.Model):
 
     def __str__(self):
         return self.project_name                 
+
+class Progress(models.Model):
+    user_id = models.ForeignKey(User,on_delete=models.CASCADE, null=True, blank=True)
+    student_name = models.CharField(max_length=100,null = True)
+    project_name = models.CharField(max_length=150)
+    start_date = models.CharField(max_length=150)
+    end_date = models.CharField(max_length=150)
+    progress = models.CharField(max_length=300)
+    resources = models.CharField(max_length=300)
+    mentor_name = models.CharField(max_length=100,null = True)
+    github_username = models.CharField(max_length=100,null = True)
+
+    def __str__(self):
+        return self.project_name

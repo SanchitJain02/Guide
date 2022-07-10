@@ -13,3 +13,4 @@ secure-smtplib==0.1.1
 python-decouple==3.6
 sqlparse==0.4.2
 asgiref==3.5.0
+whitenoise==6.0.0
