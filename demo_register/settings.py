@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 from pathlib import Path
 import os
-import django_heroku
 import dj_database_url
 from decouple import config
 
@@ -121,7 +120,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR,"static")]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -135,4 +133,3 @@ EMAIL_HOST_USER = "sanchitjain223223@gmail.com"
 EMAIL_HOST_PASSWORD = "naxhpfygrhxddhad"
 EMAIL_USE_TLS = True
 
-django_heroku.settings(locals())
