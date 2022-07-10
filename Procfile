@@ -1,1 +1,1 @@
-web gunicorn demo_register.wsgi
+web: gunicorn demo_register.wsgi
