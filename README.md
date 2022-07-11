@@ -1,7 +1,7 @@
 # Guide
 college project
 
-Hii Eveyone !!!
+Hii Everyone !!!
 
 GUIDE is a website whose main purpose is to connect mentor and mentee.
 
