@@ -110,7 +110,7 @@ def project_submission(request):
         send_mail(
             "New Project",
             body_student,
-            "sanchitjain1902@gmail.com",
+            "jainsanchit625@gmail.com",
             [email_id],
             fail_silently=False
         )
@@ -118,7 +118,7 @@ def project_submission(request):
         send_mail(
             "New Project",
             body_mentor,
-            "sanchitjain1902@gmail.com",
+            "jainsanchit625@gmail.com",
             [email_id_mentor],
             fail_silently=False
         )                            
