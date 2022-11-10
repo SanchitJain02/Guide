@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+import django_heroku
 from decouple import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -53,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'demo_register.urls'
@@ -120,8 +122,12 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-#STATICFILES_DIRS = [os.path.join(BASE_DIR,"static")]
-STATIC_ROOT = os.path.join(BASE_DIR,"staticfiles")
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR,"static"),
+    ]
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"   
+#STATIC_ROOT = os.path.join(BASE_DIR,"staticfiles")
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
@@ -132,3 +138,4 @@ EMAIL_HOST_USER = "jainsanchit625@gmail.com"
 EMAIL_HOST_PASSWORD = "qenizmuzxxqairek"
 EMAIL_USE_TLS = True
 
+django_heroku.settings(locals())
