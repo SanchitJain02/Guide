@@ -4,9 +4,8 @@ from django.contrib import messages
 from django.views.generic import CreateView
 from .form import StudentSignUpForm, TeacherSignUpForm 
 from django.contrib.auth.forms import AuthenticationForm
-from .models import  Existing_Projects, Milestone, Student, User, New_Project , Teacher, Queries,Resolved_Queries,Progress
+from .models import  Existing_Projects,Milestone,Student,User,New_Project,Teacher,Queries,Resolved_Queries,Progress
 from django.contrib.auth import authenticate,login,logout
-from twilio.rest import Client
 from django.core.mail import send_mail
 
 
@@ -62,29 +61,30 @@ def logout_view(request):
     return redirect('/')
 
 def student_dashboard(request):
-    students_info = Student.objects.filter(name = login_request.username)
+    students_info = Student.objects.filter(username = login_request.username)
     current_user = {"current_user1":login_request.username}
     context  = {"current_user":current_user,"students_info":students_info}
     return render(request, '../templates/student_dashboard.html',context)
     #return render(request,"customer_dashboard.html")
 
 def teacher_dashboard(request):
+    teacher_info = Teacher.objects.filter(username = login_request.username)
     display_project = New_Project.objects.all()
     display_milestones = Milestone.objects.all()
     current_user = {"current_user1":login_request.username}
     context  = {"display_project":display_project,"display_milestones":display_milestones,
-    "current_user":current_user}
+    "current_user":current_user,"teacher_info":teacher_info}
     return render(request, '../templates/teacher_dashboard.html',context)
     #return render(request,"employee_dashboard.html")       
 
 def project_submission(request):
-    students_info_email = Student.objects.get(name = login_request.username)
-    students_info = Student.objects.filter(name = login_request.username)
+    students_info_email = Student.objects.get(username = login_request.username)
+    students_info = Student.objects.filter(username = login_request.username)
     teachers_name = Teacher.objects.all()
     current_user = {"current_user1":login_request.username}
     context  = {"teachers_name":teachers_name,"current_user":current_user,"students_info":students_info}    
     if request.method == "POST":
-        student_name = students_info_email.name
+        student_name = students_info_email.username
         project_title = request.POST.get("project_title")
         project_desc = request.POST.get("project_desc")
         tech_stack = request.POST.get("tech_stack")
@@ -104,13 +104,13 @@ def project_submission(request):
 
         body_student = "\n\n Hii "+student_name+" !!! \n\n You have choosen the project -- "+project_title + "\n\n Mentor Name - "+mentor_name + "\n\n Tech stack of the project - "+tech_stack + "\n\n With Regards \n TEAM GUIDE"
         body_mentor = "\n\n Hii "+mentor_name+" !!! \n\n You have been choosen by : "+student_name+"\n For the project : "+project_title + "\n\n Tech stack of the project - "+tech_stack + "\n\n With Regards \n TEAM GUIDE"
-        mentor_info_email = Teacher.objects.get(name = mentor_name)
+        mentor_info_email = Teacher.objects.get(username = mentor_name)
         email_id_mentor = mentor_info_email.email                          
 
         send_mail(
             "New Project",
             body_student,
-            "jainsanchit625@gmail.com",
+            "guide.project.management@gmail.com",
             [email_id],
             fail_silently=False
         )
@@ -118,7 +118,7 @@ def project_submission(request):
         send_mail(
             "New Project",
             body_mentor,
-            "jainsanchit625@gmail.com",
+            "guide.project.management@gmail.com",
             [email_id_mentor],
             fail_silently=False
         )                            
@@ -216,7 +216,7 @@ def add_progress(request):
         end_date = request.POST.get("end_date")
         mentor_name_formula = New_Project.objects.get(project_title = project_name)
         mentor_name = mentor_name_formula.mentor_name
-        github_username_formula = Student.objects.get(name = student_name)
+        github_username_formula = Student.objects.get(username = student_name)
         github_username = github_username_formula.github_username
         new_progress = Progress(student_name = student_name,project_name = project_name,
          progress = progress,resources = resources,start_date = start_date,

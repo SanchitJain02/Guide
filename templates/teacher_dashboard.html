@@ -40,7 +40,9 @@
             <div class="col-md-12  mb-2 mx-auto">
               <div class="card">
                 <div class="card-header text-black">
-                  <h1 class = "text-center my-3 animated pulse"> Welcome {{current_user.current_user1}} !!! </h1>
+                  {%for teacher_info in teacher_info %}
+                  <h1 class = "text-center my-3 animated pulse"> Welcome {{teacher_info.name}} !!! </h1>
+                  {%endfor%}
                </div> 
                 <div style="overflow : auto ; height :400px" class="animated flipInX ">
                 {%for display_project in display_project %}

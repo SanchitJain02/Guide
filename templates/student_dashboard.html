@@ -34,7 +34,6 @@
     <ul class="navbar-nav ms-auto">
       {%for students_info in students_info %}
       <li class="nav-item"><a class="nav-link" href="https://github.com/{{students_info.github_username}}"> Github </a></li>
-      {%endfor%}
       <li class="nav-item"><a class="nav-link" href="#"> {{current_user.current_user1}} </a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'home' %}"> Logout </a></li>
     </ul>
@@ -48,11 +47,12 @@
     <div class="col-md-12  mb-2 mx-auto">
       <div class="card">
         <div class="card-header text-black">
-          <h1 class = "text-center my-3 animated tada"> Welcome {{current_user.current_user1}} !!! </h1>
+          <h1 class = "text-center my-3 animated tada"> Welcome {{students_info.name}} !!! </h1>
         </div>
+        {%endfor%}
         <div class="row row-cols-1 row-cols-md-3 g-4 p-3">
           <div class="col animated fadeInDown" >
-                <h3 class="mb-0"><b> Tips to make a Good Project :</b></h3><br>
+                <h3 class="mb-0"><b> Tips to make a Good Project : </b></h3><br>
                 <p class="mb-0"><b> 1. Know the project inside out </b> -- The first and the foremost thing that needs to be done to make a project successful is to lay a foundation strong. For this, you need to identify the clients and the stakeholders and understand their interests and expectations regarding the project. </p>
                 <p class="mb-0"><b> 2. Identify the project requirements </b> -- It is essential to identify the project requirements because the project resources are the key factors that contribute in making a project successful. </p>
                 <p class="mb-0"><b> 3. Get a qualified project manager </b> -- In order to make sure the project is progressing in the right direction, it’s essential to appoint a qualified project manager. A project manager who is credible enough will leave no stone unturned to make the project a success.</p>

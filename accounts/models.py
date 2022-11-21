@@ -12,6 +12,7 @@ class User(AbstractUser):
 
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE, primary_key = True)
+    username = models.CharField(max_length=50,null = True)
     name = models.CharField(max_length=50,null = True)
     email = models.CharField(max_length=50)
     interest = models.CharField(max_length=50)
@@ -22,6 +23,7 @@ class Student(models.Model):
 
 class Teacher(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE, primary_key = True)
+    username = models.CharField(max_length=50,null = True)
     name = models.CharField(max_length=50,null = True)
     email = models.CharField(max_length=50)
     interest = models.CharField(max_length=50)

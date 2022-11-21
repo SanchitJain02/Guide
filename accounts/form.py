@@ -7,7 +7,6 @@ from django.forms import ModelForm
 
 class StudentSignUpForm(UserCreationForm):
     first_name = forms.CharField(required=True)
-    last_name = forms.CharField(required=True)
     email = forms.CharField(required=True)
     interest = forms.CharField(required=True)
     highest_degree = forms.CharField(required=True)
@@ -21,11 +20,10 @@ class StudentSignUpForm(UserCreationForm):
         user = super().save(commit=False)
         user.is_student = True
         user.first_name = self.cleaned_data.get('first_name')
-        user.last_name = self.cleaned_data.get('last_name')
         user.save()
         student = Student.objects.create(user=user)
-        student.name=self.cleaned_data.get('username')
-        student.email=self.cleaned_data.get('email')
+        student.username=self.cleaned_data.get('username')
+        student.name=self.cleaned_data.get('first_name')
         student.interest=self.cleaned_data.get('interest')
         student.email=self.cleaned_data.get('email')
         student.github_username=self.cleaned_data.get('github_username')
@@ -34,7 +32,6 @@ class StudentSignUpForm(UserCreationForm):
 
 class TeacherSignUpForm(UserCreationForm):
     first_name = forms.CharField(required=True)
-    last_name = forms.CharField(required=True)
     email = forms.CharField(required=True)
     interest = forms.CharField(required=True)
     experience = forms.CharField(required=True)
@@ -49,11 +46,11 @@ class TeacherSignUpForm(UserCreationForm):
         user.is_teacher = True
         user.is_staff = True
         user.first_name = self.cleaned_data.get('first_name')
-        user.last_name = self.cleaned_data.get('last_name')
         user.save()
         teacher = Teacher.objects.create(user=user)
+        teacher.username=self.cleaned_data.get('username')
+        teacher.name=self.cleaned_data.get('first_name')
         teacher.email=self.cleaned_data.get('email')
-        teacher.name=self.cleaned_data.get('username')
         teacher.interest=self.cleaned_data.get('interest')
         teacher.experience=self.cleaned_data.get('experience')
         teacher.save()
